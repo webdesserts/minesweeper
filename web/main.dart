@@ -5,6 +5,8 @@ import 'dart:html';
 import 'package:minesweeper/hello.dart';
 
 void main() {
-  querySelector('#output').text = 'Your Dart app is running.';
-  sayHello();
+  var $ = querySelector;
+  var $all = querySelectorAll;
+  //$('#output').text = 'Hello Dart';
 }
+
