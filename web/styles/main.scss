@@ -1,0 +1,95 @@
+$base0: #496156;
+$base1: #A6A88C;
+$base2: #FCE8CB;
+
+$primary: #9A4055;
+$secondary: #017871;
+
+@mixin invert() {
+  $old_base0: $base0;
+  $base0: $base2 !global;
+  $base2: $old_base0 !global;
+}
+
+//@include invert();
+
+*, *:before, *:after {
+  box-sizing: border-box;
+}
+
+body > header {
+  height: 3rem;
+  h1 {
+    font-size: 2rem;
+    margin: 0;
+  }
+  #restart {
+    font-size: 1rem;
+    margin-top: .5em;
+  }
+}
+
+html, body {
+  margin: 0;
+  padding: 1em;
+  height: 100%;
+}
+
+html {
+  height: 100%;
+  width: 100%;
+  font-family: 'Source Sans Pro';
+  background-color: $base2;
+  color: $base0;
+}
+
+button {
+  color: $base0;
+  font-weight: bold;
+  background-color: $base1;
+  border: none;
+  border-radius: .25em;
+  padding: .5em;
+  &:focus {
+    color: $primary;
+    outline: none;
+
+  }
+}
+
+#restart {
+  float: right;
+}
+
+.grid {
+  display: flex;
+  flex-wrap: nowrap;
+  flex-direction: column;
+  justify-content: space-around;
+
+  background-color: $base1;
+  padding: 1em;
+}
+
+.row {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-around;
+
+  flex-grow: 1;
+  margin: .5% 0;
+}
+
+.tile {
+  flex-basis: 20px;
+  flex-grow: 1;
+  margin: 0 .5%;
+  flex-shrink: 0;
+  background-color: $base0;
+}
+
+.tile:before {
+  display: block;
+  content: '';
+  padding-top: 100%;
+}
