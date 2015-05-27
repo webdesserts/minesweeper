@@ -1,11 +1,5 @@
-import 'dart:html';
+import 'component.dart';
 
-class Row {
-  Element node;
-  num index;
-
-  Row (this.index) {
-    this.node = new Element.div();
-    this.node.className = "row";
-  }
+class Row extends ComponentHandler {
+  initialize() {}
 }

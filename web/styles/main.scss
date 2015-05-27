@@ -50,10 +50,18 @@ button {
   border: none;
   border-radius: .25em;
   padding: .5em;
+  cursor: pointer;
+  box-shadow: 2px 2px darken($base1, 10%);
+  transition: ease-out 150ms background-color;
   &:focus {
-    color: $primary;
     outline: none;
-
+  }
+  &:active {
+    color: $primary;
+    position: relative;
+    top: 1px;
+    left: 1px;
+    box-shadow: 1px 1px darken($base1, 10%);
   }
 }
 
@@ -61,14 +69,15 @@ button {
   float: right;
 }
 
-.grid {
+#grid {
   display: flex;
   flex-wrap: nowrap;
   flex-direction: column;
   justify-content: space-around;
+  border-radius: .25em;
 
   background-color: $base1;
-  padding: 1em;
+  padding: .5em;
 }
 
 .row {
@@ -86,6 +95,18 @@ button {
   margin: 0 .5%;
   flex-shrink: 0;
   background-color: $base0;
+  box-shadow: 2px 2px 2px darken($base0, 10%);
+  transform: perspective(100px);
+  transform-style: preserve-3d;
+  transition: ease-out 150ms background-color,
+ease-out 150ms box-shadow,
+  ease 150ms transform;
+  &:hover {
+
+    transform: rotateY(180deg);
+    box-shadow: 1px 1px 1px darken($base0, 10%);
+    background-color: $secondary;
+  }
 }
 
 .tile:before {

@@ -1,22 +1,17 @@
-import 'dart:html';
+library tile;
 
-class Tile {
-  ButtonElement node;
-  List subscriptions;
-  num row;
-  num col;
+import 'dart:async';
+import 'component.dart';
 
-  Tile (this.row, this.col) {
-    this.node = new ButtonElement();
-    this.node.className = "tile";
+class Tile extends ComponentHandler {
+
+  Stream get onReveal => node.on['reveal'];
+
+  initialize () {
+    node.onClick.first.then((_) => trigger('reveal'));
+    onReveal.listen(reveal);
   }
 
-  on (String name, Function func) {
-    this.node.on[name].listen(func);
-  }
-
-  trigger (String name) {
-    this.node.dispatchEvent(new CustomEvent(name));
-  }
+  reveal (event) => node.classes.add('revealed');
 
 }
