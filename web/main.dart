@@ -2,11 +2,11 @@
 // is governed by a BSD-style license that can be found in the LICENSE file.
 
 import 'dart:html';
-import 'package:minesweeper/hello.dart';
+import 'package:minesweeper/grid.dart';
 
 void main() {
   var $ = querySelector;
-  var $all = querySelectorAll;
-  //$('#output').text = 'Hello Dart';
+  var ele = $('.grid');
+  new Grid(ele);
 }
 
