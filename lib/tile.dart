@@ -1,17 +1,80 @@
 library tile;
 
-import 'dart:async';
 import 'component.dart';
+import 'dart:html';
 
 class Tile extends ComponentHandler {
 
-  Stream get onReveal => node.on['reveal'];
+  bool isMine = false;
+  bool isRevealed = false;
+  num nearbyMines = 0;
+
+  ElementStream get onReveal => node.on['reveal'];
+  ElementStream get onReset => node.on['reset'];
+  ElementStream get onArmMine => node.on['armMine'];
+  ElementStream get onSelect => node.on['select'];
+  ElementStream get onNearMine => node.on['nearMine'];
+  ElementStream get onCascadeReveal => node.on['cascadeReveal'];
 
   initialize () {
-    node.onClick.first.then((_) => trigger('reveal'));
-    onReveal.listen(reveal);
+    var result = new DivElement();
+    result.classes.add('result');
+    node.append(result);
+    node.onClick.first.then((_) => trigger('select'));
+    onSelect.listen(select);
+    onReveal.first.then(reveal);
+    onCascadeReveal.first.then((_) => trigger('reveal'));
+    onReset.listen(reset);
+    onArmMine.listen(armMine);
+    onNearMine.listen(nearMine);
+    window.onResize.listen((_) => resizeText());
+    resizeText();
   }
 
-  reveal (event) => node.classes.add('revealed');
+  resizeText () {
+    var width = node.getComputedStyle().width;
+    var digitsExp = new RegExp(r'\d+\.?\d+');
+    double raw = double.parse(digitsExp.firstMatch(width)[0]);
+    var font_size = width.replaceFirst(digitsExp, (raw*.4).toString());
+    node.style.fontSize = font_size;
+  }
+
+  select (event) {
+    trigger('reveal');
+  }
+
+  reveal (event) {
+    if (!isRevealed) {
+      node.classes.add('revealed');
+      isRevealed = true;
+      if (isMine) { trigger('trippedMine'); }
+    }
+  }
+
+  reset (event) {
+    print('reset');
+    node.onClick.first.then((_) => trigger('select'));
+    onReveal.first.then(reveal);
+    onCascadeReveal.first.then((_) => trigger('reveal'));
+    node.classes.remove('revealed');
+    node.classes.remove('mine');
+    var result = node.querySelector('.result');
+    result.innerHtml ='';
+
+    isMine = false;
+    isRevealed = false;
+    nearbyMines = 0;
+  }
+
+  armMine(event) {
+    isMine = true;
+    node.classes.add('mine');
+    print('setMine');
+  }
+
+  nearMine(event) {
+    nearbyMines++;
+    node.querySelector('.result').innerHtml = nearbyMines.toString();
+  }
 
 }

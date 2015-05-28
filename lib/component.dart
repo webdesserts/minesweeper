@@ -13,23 +13,16 @@ class Component {
     for (var element in elements) {
       ComponentHandler handler = _create();
       handler._attachTo(element);
-      handler.trigger('initialize');
+      handler.trigger('initialized');
     }
   }
 }
 
 abstract class ComponentHandler {
   Element node;
-  //Stream get onClick => node.onClick;
-  //Stream get onMouseLeave => node.onMouseLeave;
-  //Stream get onMouseMove => node.onMouseMove;
-  //Stream get onMouseDown => node.onMouseDown;
-  //Stream get onMouseUp => node.onMouseUp;
-  //Stream get onMouseOver => node.onMouseOver;
-  //Stream get onMouseEnter => node.onMouseEnter;
-  //Stream get onMouseWheel => node.onMouseWheel;
-  //Stream get onFocus => node.onFocus;
-  //Stream get onBlur => node.onBlur;
+
+  ElementEvents get on => node.on;
+  ElementStream get onInitialized => node.on['initialized'];
 
   Function get querySelector => node.querySelector;
   Function get querySelectorAll => node.querySelectorAll;
@@ -42,7 +35,20 @@ abstract class ComponentHandler {
   }
 
   trigger (String name) => node.dispatchEvent(new CustomEvent(name, detail: this));
+  triggerOn (String selector, String name, [Object details]) => querySelector(selector).dispatchEvent(new CustomEvent(name, detail: details ? details : this));
+  triggerOnAll (String selector, String name) {
+    var elements = querySelectorAll(selector);
+    for (var element in elements) {
+      element.dispatchEvent(new CustomEvent(name, detail: this));
+    }
+  }
 
   dispatch (CustomEvent event) => node.dispatchEvent(event);
-  
+  dispatchOn (String selector, CustomEvent event) => querySelector(selector).dispatchEvent(event);
+  dispatchOnAll (String selector, CustomEvent event) {
+    var elements = querySelectorAll(selector);
+    for (var element in elements) {
+      element.dispatchEvent(event);
+    }
+  }
 }

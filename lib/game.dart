@@ -1,32 +1,40 @@
 library Game;
 
 import 'package:minesweeper/component.dart';
-import 'package:minesweeper/grid.dart';
 import 'dart:html';
 
 class Game extends ComponentHandler {
 
+  String $restart;
+  String $grid;
+  num score;
+  num mines;
+
+  ElementStream get onStart => node.on['start'];
+  ElementStream get onTrippedMine => node.on['game over'];
+
+  Game({
+    this.mines: 1,
+    this.$restart: '#restart',
+    this.$grid: '#grid'
+  });
+
   initialize () {
-    generateGrid(node.querySelector('#grid'));
-    var grid = new Component(() => new Grid());
-    grid.attachTo('#grid');
+    querySelector($restart).onClick.listen(restart);
+    onStart.listen(start);
+    onTrippedMine.listen(gameOver);
+    trigger('start');
   }
 
-  generateGrid(Element grid, { rows: 10, cols: 10 }) {
-
-    for (num r = 0; r < rows; r++) {
-      var row = new DivElement();
-      row.className = "row";
-      generateTiles(row, cols);
-      grid.append(row);
-    }
+  restart (event) {
+    triggerOn($grid, 'reset');
+    trigger('start');
   }
 
-  generateTiles(Element row, num cols) {
-    for (num c = 0; c < cols; c++) {
-      var tile = new DivElement();
-      tile.className = "tile";
-      row.append(tile);
-    }
+  start (event) {
+    triggerOn($grid, 'armMines');
   }
+
+  gameOver (event) {}
+
 }

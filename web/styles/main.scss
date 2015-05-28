@@ -38,7 +38,7 @@ html, body {
 html {
   height: 100%;
   width: 100%;
-  font-family: 'Source Sans Pro';
+  font-family: 'Source Sans Pro', Helvetica, Serif;
   background-color: $base2;
   color: $base0;
 }
@@ -90,22 +90,27 @@ button {
 }
 
 .tile {
-  flex-basis: 20px;
+  position: relative;
+  cursor: pointer;
+  flex-basis: 10px;
   flex-grow: 1;
   margin: 0 .5%;
   flex-shrink: 0;
   background-color: $base0;
-  box-shadow: 2px 2px 2px darken($base0, 10%);
-  transform: perspective(100px);
+  box-shadow: 2px 2px 3px rgba(0,0,0, .6);
+  transform: rotateY(180deg);
   transform-style: preserve-3d;
   transition: ease-out 150ms background-color,
-ease-out 150ms box-shadow,
-  ease 150ms transform;
-  &:hover {
-
-    transform: rotateY(180deg);
-    box-shadow: 1px 1px 1px darken($base0, 10%);
+    ease-out 150ms box-shadow,
+    ease 150ms transform;
+  &.revealed {
+    transform: perspective(70vw);
+    cursor: default;
+    box-shadow: none;
     background-color: $secondary;
+  }
+  &.revealed.mine {
+    background-color: $primary;
   }
 }
 
@@ -114,3 +119,24 @@ ease-out 150ms box-shadow,
   content: '';
   padding-top: 100%;
 }
+
+.tile .result {
+  font-size: 1em;
+  position: absolute;
+  padding-top: 50%;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  line-height: 0;
+  color: transparent;
+  text-align: center;
+}
+
+.tile.revealed.mine .result {
+  color: transparent;
+}
+.tile.revealed .result {
+  color: $base2;
+}
+
