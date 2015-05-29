@@ -1,7 +1,10 @@
 library Game;
 
-import 'package:minesweeper/component.dart';
 import 'dart:html';
+import 'dart:math';
+
+import 'grid.dart';
+import 'component.dart';
 
 class Game extends ComponentHandler {
 
@@ -10,18 +13,23 @@ class Game extends ComponentHandler {
   String $mines;
   num score;
   num mines;
+  int size;
 
   ElementStream get onStart => node.on['start'];
   ElementStream get onTrippedMine => node.on['trippedMine'];
 
   Game({
-    this.mines: 1,
+    this.mines: 100,
+    this.size: 60,
     this.$restart: '.restart',
     this.$grid: '#grid',
     this.$mines: '.tile.mine'
   });
 
   initialize () {
+    var grid = new Component(() => new Grid(rows: sqrt(size).round(), cols: sqrt(size).round()));
+    grid.attachTo($grid);
+
     querySelectorAll($restart).onClick.listen(restart);
     onStart.listen(start);
     onTrippedMine.first.then(gameOver);

@@ -8,8 +8,8 @@ import 'dart:async';
 
 class Grid extends ComponentHandler {
 
-  num cols;
-  num rows;
+  int cols;
+  int rows;
   String $tiles;
   String $rows;
   ElementStream get onReset => node.on['reset'];
