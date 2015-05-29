@@ -5,6 +5,9 @@ $base2: #FCE8CB;
 $primary: #9A4055;
 $secondary: #017871;
 
+$negative: $primary;
+$positive: $secondary;
+
 @mixin invert() {
   $old_base0: $base0;
   $base0: $base2 !global;
@@ -18,14 +21,16 @@ $secondary: #017871;
 }
 
 body > header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
   height: 3rem;
   h1 {
     font-size: 2rem;
     margin: 0;
   }
-  .restart {
-    float: right;
-  }
+  .actions { text-align: right; }
+  .dialog { align-self: center }
 }
 
 html, body {
@@ -65,7 +70,6 @@ button {
 }
 
 .restart {
-  margin-top: .5em;
   font-size: 1rem;
 }
 
@@ -110,7 +114,8 @@ button {
     background-color: $secondary;
   }
   &.revealed.mine {
-    background-color: $primary;
+    background-color: $negative;
+    box-shadow: 0 0 15px transparentize($negative, .3);
   }
 }
 
@@ -142,16 +147,9 @@ button {
 
 .dialog {
   display: none;
-  position: absolute;
-  top: 25%;
-  left: 25%;
   text-align: center;
-  background-color: $base2;
-  border: 3px solid $base1;
-  width: 50%;
-  height: 25%;
   .message {
-    font-size: 3em;
+    font-size: 2em;
     color: $primary;
   }
 }

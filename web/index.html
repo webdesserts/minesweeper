@@ -18,19 +18,21 @@
 
 <body id="game">
 
-  <header>
-    <button class="restart">restart</button>
+<header>
     <h1>Minesweeper</h1>
-  </header>
+
+    <div class="dialog">
+        <div class="message">Game Over</div>
+    </div>
+    <div class="actions">
+        <button class="restart">restart</button>
+    </div>
+</header>
 
   <main>
       <div id="grid"></div>
   </main>
 
-  <div class="dialog">
-      <div class="message">Game Over</div>
-      <button class="restart">restart</button>
-  </div>
 
 <script type="application/dart" src="main.dart"></script>
 <script data-pub-inline src="packages/browser/dart.js"></script>
