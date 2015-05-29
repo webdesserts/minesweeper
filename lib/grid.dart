@@ -76,7 +76,6 @@ class Grid extends ComponentHandler {
 
   countRemainingMines (CustomEvent event) {
     ElementList remaining = querySelectorAll($remaining_tiles);
-    print(remaining.length);
     if (remaining.length == 0) trigger('complete');
   }
 
