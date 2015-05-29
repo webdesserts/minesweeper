@@ -35,7 +35,7 @@ abstract class ComponentHandler {
   }
 
   trigger (String name) => node.dispatchEvent(new CustomEvent(name, detail: this));
-  triggerOn (String selector, String name, [Object details]) => querySelector(selector).dispatchEvent(new CustomEvent(name, detail: details ? details : this));
+  triggerOn (String selector, String name, [Object details]) => querySelector(selector).dispatchEvent(new CustomEvent(name, detail: this));
   triggerOnAll (String selector, String name) {
     var elements = querySelectorAll(selector);
     for (var element in elements) {

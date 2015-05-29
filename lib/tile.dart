@@ -8,6 +8,7 @@ class Tile extends ComponentHandler {
 
   bool isMine = false;
   bool isRevealed = false;
+  bool isEnabled = false;
   num nearbyMines = 0;
   bool get isEmpty => (!isMine && nearbyMines == 0);
   StreamSubscription selectable;
@@ -20,21 +21,29 @@ class Tile extends ComponentHandler {
   ElementStream get onNearMine => node.on['nearMine'];
   ElementStream get onCascadeReveal => node.on['cascadeReveal'];
   ElementStream get onDisable => node.on['disable'];
+  ElementStream get onEnable => node.on['enable'];
 
   initialize () {
     var result = new DivElement();
     result.classes.add('result');
     node.append(result);
-    node.onClick.first.then((_) => trigger('select'));
-    selectable = onSelect.listen(select);
-    onReveal.first.then(reveal);
-    onCascadeReveal.first.then(reveal);
     onReset.listen(reset);
     onArmMine.listen(armMine);
     onNearMine.listen(nearMine);
+    onDisable.listen(disable);
+    onEnable.listen(enable);
     window.onResize.listen((_) => resizeText());
-    onDisable.first.then(disable);
     resizeText();
+    setupEvents();
+  }
+
+  /// setup single fire events;
+  setupEvents () {
+    print('setting up events');
+    node.onClick.first.then((_) => trigger('select'));
+    onReveal.first.then(reveal);
+    onCascadeReveal.first.then(reveal);
+
   }
 
   resizeText () {
@@ -47,7 +56,7 @@ class Tile extends ComponentHandler {
 
   select (event) {
     print('selected');
-    reveal(event);
+    if (isEnabled) reveal(event);
   }
 
   reveal (CustomEvent event) {
@@ -62,12 +71,7 @@ class Tile extends ComponentHandler {
   }
 
   reset (event) {
-    print('reset');
-    node.onClick.first.then((_) => trigger('select'));
-    onReveal.first.then(reveal);
-    onCascadeReveal.first.then(reveal);
-    selectable = onSelect.listen(select);
-    onDisable.first.then(disable);
+    setupEvents();
 
     node.classes.remove('revealed');
     node.classes.remove('mine');
@@ -76,6 +80,7 @@ class Tile extends ComponentHandler {
 
     isMine = false;
     isRevealed = false;
+    isEnabled = false;
     nearbyMines = 0;
   }
 
@@ -90,8 +95,15 @@ class Tile extends ComponentHandler {
     node.querySelector('.result').innerHtml = nearbyMines.toString();
   }
 
+  enable(event) {
+    print('tile enabled');
+    isEnabled = true;
+    selectable = onSelect.listen(select);
+  }
+
   disable(event) {
-    print('disable');
+    print('tile disabled');
+    isEnabled = false;
     selectable.cancel();
   }
 

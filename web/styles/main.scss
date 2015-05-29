@@ -150,10 +150,15 @@ button {
   text-align: center;
   .message {
     font-size: 2em;
-    color: $primary;
   }
 }
 .over .dialog {
   display: block;
+  color: $negative;
+}
+
+.win .dialog {
+  display: block;
+  color: $positive;
 }
 
