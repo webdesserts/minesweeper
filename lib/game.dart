@@ -7,6 +7,7 @@ class Game extends ComponentHandler {
 
   String $restart;
   String $grid;
+  String $mines;
   num score;
   num mines;
 
@@ -16,19 +17,21 @@ class Game extends ComponentHandler {
   Game({
     this.mines: 1,
     this.$restart: '.restart',
-    this.$grid: '#grid'
+    this.$grid: '#grid',
+    this.$mines: '.tile.mine'
   });
 
   initialize () {
     querySelectorAll($restart).onClick.listen(restart);
     onStart.listen(start);
-    onTrippedMine.listen(gameOver);
+    onTrippedMine.first.then(gameOver);
     trigger('start');
   }
 
   restart (event) {
     triggerOn($grid, 'reset');
     node.classes.remove('over');
+    onTrippedMine.first.then(gameOver);
     trigger('start');
   }
 
@@ -37,9 +40,10 @@ class Game extends ComponentHandler {
   }
 
   gameOver (event) {
-    print('oh no!');
     node.querySelector('.message').setInnerHtml('Game Over');
     node.classes.add('over');
+    triggerOnAll($mines, 'reveal');
+    triggerOn($grid, 'disable');
   }
 
 }

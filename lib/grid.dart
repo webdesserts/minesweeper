@@ -14,7 +14,8 @@ class Grid extends ComponentHandler {
   String $rows;
   ElementStream get onReset => node.on['reset'];
   ElementStream get onArmMines => node.on['armMines'];
-  ElementStream get onReveal => node.on['reveal'];
+  ElementStream get onRevealed => node.on['revealed'];
+  ElementStream get onDisable => node.on['disable'];
 
   Grid({
     this.rows: 10,
@@ -29,12 +30,14 @@ class Grid extends ComponentHandler {
     tile.attachTo($tiles);
     onReset.listen(reset);
     onArmMines.listen(armMines);
-    onReveal.listen(cascadeReveal);
+    onRevealed.listen(cascadeReveal);
+    onDisable.first.then(disableAllTiles);
   }
 
   reset (event) {
     if (event.target == node) {
       triggerOnAll($tiles, 'reset');
+      onDisable.first.then(disableAllTiles);
       print('reseting grid');
     }
   }
@@ -63,15 +66,22 @@ class Grid extends ComponentHandler {
   }
 
   cascadeReveal (CustomEvent event) {
-    List neighbors = findNeighbors(event.target);
-    if (event.detail != null && !event.detail.isMine && event.detail.nearbyMines == 0 ) {
+    if (event.detail != null && event.detail.isEmpty ) {
+      List neighbors = findNeighbors(event.target);
+
       for (var neighbor in neighbors) {
         var timer = new Timer(new Duration(milliseconds: 100), () {
           neighbor.dispatchEvent(new CustomEvent('cascadeReveal'));
         });
-        neighbor.on['reveal'].first.then((_)=> timer.cancel());
+
+        neighbor.on['cascadeReveal'].first.then((_) => timer.cancel());
       }
+
     }
+  }
+
+  disableAllTiles (CustomEvent event) {
+    triggerOnAll($tiles, 'disable');
   }
 
   findNeighbors (Element tile) {
