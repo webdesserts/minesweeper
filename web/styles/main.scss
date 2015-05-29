@@ -23,9 +23,8 @@ body > header {
     font-size: 2rem;
     margin: 0;
   }
-  #restart {
-    font-size: 1rem;
-    margin-top: .5em;
+  .restart {
+    float: right;
   }
 }
 
@@ -38,7 +37,7 @@ html, body {
 html {
   height: 100%;
   width: 100%;
-  font-family: 'Source Sans Pro', Helvetica, Serif;
+  font-family: 'Source Sans Pro', Helvetica, serif;
   background-color: $base2;
   color: $base0;
 }
@@ -65,8 +64,9 @@ button {
   }
 }
 
-#restart {
-  float: right;
+.restart {
+  margin-top: .5em;
+  font-size: 1rem;
 }
 
 #grid {
@@ -100,11 +100,11 @@ button {
   box-shadow: 2px 2px 3px rgba(0,0,0, .6);
   transform: rotateY(180deg);
   transform-style: preserve-3d;
-  transition: ease-out 150ms background-color,
+  transition: ease-out 700ms background-color,
     ease-out 150ms box-shadow,
     ease 150ms transform;
   &.revealed {
-    transform: perspective(70vw);
+    transform: perspective(50vw);
     cursor: default;
     box-shadow: none;
     background-color: $secondary;
@@ -138,5 +138,24 @@ button {
 }
 .tile.revealed .result {
   color: $base2;
+}
+
+.dialog {
+  display: none;
+  position: absolute;
+  top: 25%;
+  left: 25%;
+  text-align: center;
+  background-color: $base2;
+  border: 3px solid $base1;
+  width: 50%;
+  height: 25%;
+  .message {
+    font-size: 3em;
+    color: $primary;
+  }
+}
+.over .dialog {
+  display: block;
 }
 

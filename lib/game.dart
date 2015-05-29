@@ -11,16 +11,16 @@ class Game extends ComponentHandler {
   num mines;
 
   ElementStream get onStart => node.on['start'];
-  ElementStream get onTrippedMine => node.on['game over'];
+  ElementStream get onTrippedMine => node.on['trippedMine'];
 
   Game({
     this.mines: 1,
-    this.$restart: '#restart',
+    this.$restart: '.restart',
     this.$grid: '#grid'
   });
 
   initialize () {
-    querySelector($restart).onClick.listen(restart);
+    querySelectorAll($restart).onClick.listen(restart);
     onStart.listen(start);
     onTrippedMine.listen(gameOver);
     trigger('start');
@@ -28,6 +28,7 @@ class Game extends ComponentHandler {
 
   restart (event) {
     triggerOn($grid, 'reset');
+    node.classes.remove('over');
     trigger('start');
   }
 
@@ -35,6 +36,10 @@ class Game extends ComponentHandler {
     triggerOn($grid, 'armMines');
   }
 
-  gameOver (event) {}
+  gameOver (event) {
+    print('oh no!');
+    node.querySelector('.message').setInnerHtml('Game Over');
+    node.classes.add('over');
+  }
 
 }

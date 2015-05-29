@@ -6,8 +6,8 @@ import 'package:minesweeper/game.dart';
 import 'package:minesweeper/grid.dart';
 
 void main() {
-  var game = new Component(() => new Game(mines: 12));
-  var grid = new Component(() => new Grid(rows: 10, cols: 10));
+  var game = new Component(() => new Game(mines: 100));
+  var grid = new Component(() => new Grid(rows: 30, cols: 30));
   grid.attachTo('#grid');
   game.attachTo('#game');
 }
