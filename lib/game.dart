@@ -72,7 +72,7 @@ class Game extends ComponentHandler {
     triggerOn($grid, 'disable');
   }
 
-  /// I am a messy caracass
+  /// I am a messy carcass
   gameOver (event) {
     node.querySelector('.message').setInnerHtml('Game Over');
     node.classes.add('over');
